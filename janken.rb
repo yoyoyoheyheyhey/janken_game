@@ -1,45 +1,62 @@
-JANKEN = ['グー', 'チョキ', 'パー']
-
 class Player
   def hand
     while true do
       puts "数字を入力してください。"
-      JANKEN.each_with_index do |hand, i|
+      Janken.hands.each_with_index do |hand, i|
         puts "#{i}:#{hand}"
       end
-
+​
       player_hand = gets.chomp
-
+​
       if valid?(player_hand)
-        puts "あなたは#{JANKEN[player_hand.to_i]}を出しました"
+        puts "あなたは#{Janken.hand_text(hand)}を出しました"
         break
       else
-        puts "【Warning】0〜2の数字を入力してください。"
+        puts "【Warning】#{Janken.hand_values.join(',')}の数字を入力してください。"
       end
     end
     player_hand.to_i
   end
-
+​
   def valid?(player_hand)
-    if ['0', '1', '2'].include?(player_hand)
+    if Janken.hand_values.map(&:to_s).include?(player_hand)
       true
     else
       false
     end
   end
 end
-
+​
 class Enemy
   def hand
-    hand = rand(0..2)
-    puts "PCは#{JANKEN[hand]}を出しました"
+    index = rand(Janken::HANDS.length)
+    hand = Janken.to_a[index].last
+    puts "PCは#{Janken.hand_text(hand)}を出しました"
     hand
   end
 end
-
+​
 class Janken
+  HANDS = {
+    'グー' => 0,
+    'チョキ' => 1,
+    'パー' => 2
+  }.freeze
+​
+  def self.hand_values
+    HANDS.values
+  end
+​
+  def self.hand_names
+    HANDS.keys
+  end
+​
+  def self.hand_text(hand)
+    HANDS.invert[hand]
+  end
+​
   def pon(player_hand, enemy_hand)
-    result = (player_hand - enemy_hand + 3) % 3
+    result = judge(player_hand, enemy_hand)
     case result
     when 2
       puts "あなたの勝ちです"
@@ -52,14 +69,20 @@ class Janken
       true
     end
   end
+​
+  private
+​
+  def judge(player_hand, enemy_hand)
+    (player_hand - enemy_hand + 3) % 3
+  end
 end
-
+​
 player = Player.new
 enemy = Enemy.new
 janken = Janken.new
-
+​
 next_game = true
-
+​
 while next_game
   next_game = janken.pon(player.hand, enemy.hand)
 end
