@@ -4,9 +4,9 @@ class Player
   def hand
     while true do
       puts "数字を入力してください。"
-      puts "0: グー"
-      puts "1: チョキ"
-      puts "2: パー"
+      JANKEN.each_with_index do |hand, i|
+        puts "#{i}:#{hand}"
+      end
 
       player_hand = gets.chomp
 
@@ -14,7 +14,7 @@ class Player
         puts "あなたは#{JANKEN[player_hand.to_i]}を出しました"
         break
       else
-        puts "0〜2の数字を入力してください。"
+        puts "【Warning】0〜2の数字を入力してください。"
       end
     end
     player_hand.to_i
