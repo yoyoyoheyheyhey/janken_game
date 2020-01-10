@@ -43,16 +43,18 @@ class Janken
     'パー' => 2
   }.freeze
 ​
-  def self.hand_values
-    HANDS.values
-  end
+  class << self
+    def hand_values
+      HANDS.values
+    end
 ​
-  def self.hand_names
-    HANDS.keys
-  end
+    def hand_names
+      HANDS.keys
+    end
 ​
-  def self.hand_text(hand)
-    HANDS.invert[hand]
+    def hand_text(hand)
+      HANDS.invert[hand]
+    end
   end
 ​
   def pon(player_hand, enemy_hand)
