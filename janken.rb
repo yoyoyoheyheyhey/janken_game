@@ -2,8 +2,8 @@ class Player
   def hand
     while true do
       puts "数字を入力してください。"
-      Janken::HANDS.each_with_index do |hand, i|
-        puts "#{i}:#{hand}"
+      Janken::HANDS.each do |k, v|
+        puts "#{v}:#{k}"
       end
 
       player_hand = gets.chomp
@@ -37,12 +37,7 @@ class Enemy
 end
 
 class Janken
-  HANDS = {
-    'グー' => 0,
-    'チョキ' => 1,
-    'パー' => 2
-  }.freeze
-
+  HANDS = { "グー": 0, "チョキ": 1, "パー": 2 }.freeze
   class << self
     def hand_values
       HANDS.values
