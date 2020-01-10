@@ -2,7 +2,7 @@ class Player
   def hand
     while true do
       puts "数字を入力してください。"
-      Janken.hands.each_with_index do |hand, i|
+      Janken::HANDS.each_with_index do |hand, i|
         puts "#{i}:#{hand}"
       end
 
