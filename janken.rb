@@ -6,51 +6,36 @@ class Player
         puts "#{v}:#{k}"
       end
 
-      player_hand = gets.chomp
-​
-      if valid?(player_hand)
-        puts "あなたは#{Janken.hand_text(hand)}を出しました"
+      hand = gets.chomp.to_i
+
+      if valid?(hand)
+        puts "あなたは#{Janken::HANDS.key(hand)}を出しました"
         break
       else
-        puts "【Warning】#{Janken.hand_values.join(',')}の数字を入力してください。"
+        puts "【Warning】#{Janken::HANDS.values}の数字を入力してください。"
       end
     end
-    player_hand.to_i
+
+    hand
   end
 
+  private 
+
   def valid?(player_hand)
-    if Janken.hand_values.map(&:to_s).include?(player_hand)
-      true
-    else
-      false
-    end
+    Janken::HANDS.values.include?(player_hand) ? true : false
   end
 end
 
 class Enemy
   def hand
-    index = rand(Janken::HANDS.length)
-    hand = Janken.to_a[index].last
-    puts "PCは#{Janken.hand_text(hand)}を出しました"
+    hand = Janken::HANDS.values.sample
+    puts "PCは#{Janken::HANDS.key(hand)}を出しました"
     hand
   end
 end
 
 class Janken
   HANDS = { "グー": 0, "チョキ": 1, "パー": 2 }.freeze
-  class << self
-    def hand_values
-      HANDS.values
-    end
-
-    def hand_names
-      HANDS.keys
-    end
-
-    def hand_text(hand)
-      HANDS.invert[hand]
-    end
-  end
 
   def pon(player_hand, enemy_hand)
     result = judge(player_hand, enemy_hand)
