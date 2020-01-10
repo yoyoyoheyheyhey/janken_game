@@ -1,4 +1,3 @@
-
 module Janken
   HANDS = { "グー": 0, "チョキ": 1, "パー": 2 }.freeze
 
@@ -38,30 +37,32 @@ class Player
   include Janken
 
   def hand
-    while true do
-      puts "数字を入力してください。"
-      HANDS.each do |k, v|
-        puts "#{v}:#{k}"
-      end
-
-      hand = gets.chomp.to_i
-
-      if valid?(hand)
-        puts "あなたは#{hand_name(hand)}を出しました"
-        break
-      else
-        puts "【Warning】#{hands}の数字を入力してください。"
+    catch :player_hand do
+      loop do
+        hand = player_input
+        if valid?(hand)
+          puts "あなたは#{hand_name(hand)}を出しました"
+          throw :player_hand, hand
+        else
+          puts "【Warning】#{hands}の数字を入力してください。"
+        end
       end
     end
+  end
 
-    hand
+  def player_input
+    puts "数字を入力してください。"
+    HANDS.each do |k, v|
+      puts "#{v}:#{k}"
+    end
+    gets.chomp.to_i
   end
 
   def valid?(player_hand)
     hands.include?(player_hand) ? true : false
   end
 
-  private :valid?
+  private :player_input, :valid?
 end
 
 class Enemy
