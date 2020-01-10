@@ -59,12 +59,16 @@ class Janken
   end
 end
 
-player = Player.new
-enemy = Enemy.new
-janken = Janken.new
+def main
+  player = Player.new
+  enemy = Enemy.new
+  janken = Janken.new
 
-next_game = true
+  next_game = true
 
-while next_game
-  next_game = janken.pon(player.hand, enemy.hand)
+  while next_game
+    next_game = janken.pon(player.hand, enemy.hand)
+  end
 end
+
+main if __FILE__ == $0
